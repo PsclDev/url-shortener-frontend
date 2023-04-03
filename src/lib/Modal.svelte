@@ -4,10 +4,11 @@
 	import { faXmark } from '@fortawesome/free-solid-svg-icons';
 	import { createEventDispatcher, onMount } from 'svelte';
 	import { appStore } from './store';
+	import { variables } from './variables';
 
 	let apiUrl: string;
 	onMount(async () => {
-		apiUrl = `${window.location.origin}/api`;
+		apiUrl = `${variables.apiBasePath}`;
 	});
 
 	const dispatch = createEventDispatcher();
@@ -20,27 +21,24 @@
 		const { url, slug } = item;
 		await fetch(`${apiUrl}/${item.id}`, {
 			method: 'PATCH',
+			credentials: 'include',
 			headers: {
 				'Content-Type': 'application/json'
 			},
 			body: JSON.stringify({ url, slug })
 		});
 
-		appStore.set({
-			links: [item, ...$appStore.links.filter((link: Link) => link.id !== item.id)]
-		});
-
+		appStore.set([item, ...$appStore.filter((link: Link) => link.id !== item.id)]);
 		closeModal();
 	}
 
 	async function trash() {
 		await fetch(`${apiUrl}/${item.id}`, {
-			method: 'DELETE'
+			method: 'DELETE',
+			credentials: 'include'
 		});
 
-		appStore.set({
-			links: [...$appStore.links.filter((link: Link) => link.id !== item.id)]
-		});
+		appStore.set([...$appStore.filter((link: Link) => link.id !== item.id)]);
 	}
 
 	export let item: Link;

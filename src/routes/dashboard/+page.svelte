@@ -4,34 +4,33 @@
 	import Fa from 'svelte-fa';
 	import { faLink } from '@fortawesome/free-solid-svg-icons';
 	import { appStore } from '$lib/store';
-	import { onMount } from 'svelte';
+	import { onDestroy, onMount } from 'svelte';
+	import { variables } from '$lib/variables';
 
 	let apiUrl: string;
 	onMount(async () => {
-		apiUrl = `${window.location.origin}/api`;
-		const res = await fetch(apiUrl);
-		appStore.set({
-			links: await res.json()
-		});
+		apiUrl = `${variables.apiBasePath}`;
+		const res = await fetch(apiUrl, {credentials: 'include'});
+		const links = await res.json();
+		appStore.set(links);
 	});
-
-	$: links = $appStore.links;
-
+	
+	let links: Link[] = [];
+	const unsubscribe = appStore.subscribe(s => links = s);
+	
 	let url = '';
 	let isDuplicate = false;
-
 	let onSubmit = async () => {
 		const res = await fetch(apiUrl, {
 			method: 'POST',
+			credentials: 'include',
 			headers: {
 				'Content-Type': 'application/json'
 			},
 			body: JSON.stringify({ url })
 		});
 		const link = await res.json();
-		appStore.set({
-			links: [link, ...links]
-		});
+		appStore.set([link, ...links]);
 	};
 
 	let timer = 0;
@@ -45,8 +44,10 @@
 
 			isDuplicate = false;
 			url = value;
-		}, 350);
+		}, 150);
 	};
+
+	onDestroy(unsubscribe)
 </script>
 
 <div class="min-h-screen pt-10 mb-5 place-items-center">

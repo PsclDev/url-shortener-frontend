@@ -4,7 +4,3 @@ export interface Link {
 	slug?: string;
 	updatedAt: Date;
 }
-
-export interface StoreInterface {
-	links: Link[];
-}
