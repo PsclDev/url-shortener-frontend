@@ -17,7 +17,6 @@
 	}
 
 	async function onSubmit() {
-		console.log('update');
 		const { url, slug } = item;
 		await fetch(`${apiUrl}/${item.id}`, {
 			method: 'PATCH',
@@ -28,7 +27,7 @@
 			body: JSON.stringify({ url, slug })
 		});
 
-		appStore.set([item, ...$appStore.filter((link: Link) => link.id !== item.id)]);
+		appStore.update(l => l = [item, ...$appStore.filter((link: Link) => link.id !== item.id)]);
 		closeModal();
 	}
 
@@ -38,7 +37,7 @@
 			credentials: 'include'
 		});
 
-		appStore.set([...$appStore.filter((link: Link) => link.id !== item.id)]);
+		appStore.update(l => l = [...$appStore.filter((link: Link) => link.id !== item.id)]);
 	}
 
 	export let item: Link;

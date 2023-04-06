@@ -4,6 +4,11 @@
 	export const loginUrl = variables.apiBasePath + '/auth/github';
 </script>
 
+
+<svelte:head>
+    <title>Shortener - Login</title> 
+</svelte:head>
+
 <div class="grid h-screen place-items-center">
 	<a href={loginUrl}>
 		<button

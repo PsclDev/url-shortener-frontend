@@ -30,11 +30,12 @@
 			body: JSON.stringify({ url })
 		});
 		const link = await res.json();
-		appStore.set([link, ...links]);
+		appStore.update(l => l = [link, ...links]);
 	};
 
 	let timer = 0;
 	let urlChanged = (value: string) => {
+		isDuplicate = true;
 		clearTimeout(timer);
 		timer = setTimeout(() => {
 			if (links.filter((link: Link) => link.url === value).length > 0) {
@@ -44,11 +45,15 @@
 
 			isDuplicate = false;
 			url = value;
-		}, 150);
+		}, 350);
 	};
 
 	onDestroy(unsubscribe)
 </script>
+
+<svelte:head>
+    <title>Shortener - Dashboard</title> 
+</svelte:head>
 
 <div class="min-h-screen pt-10 mb-5 place-items-center">
 	<form on:submit|preventDefault={onSubmit} class="mb-10">
@@ -77,8 +82,10 @@
 	</form>
 
 	<div class="flex flex-column flex-wrap gap-5">
-		{#each links as link}
+		{#key links}
+			{#each links as link}
 			<LinkComponent item={link} />
-		{/each}
+			{/each}
+		{/key}
 	</div>
 </div>
