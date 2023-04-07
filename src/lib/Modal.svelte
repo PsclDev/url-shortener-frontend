@@ -42,12 +42,8 @@
 
 	export let item: Link;
 
-	let timer = 0;
 	let valueChanged = (key: string, value: string) => {
-		clearTimeout(timer);
-		timer = setTimeout(() => {
-			item[key] = value;
-		}, 350);
+		item[key] = value;
 	};
 </script>
 

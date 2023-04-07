@@ -33,19 +33,14 @@
 		appStore.update(l => l = [link, ...links]);
 	};
 
-	let timer = 0;
 	let urlChanged = (value: string) => {
-		isDuplicate = true;
-		clearTimeout(timer);
-		timer = setTimeout(() => {
-			if (links.filter((link: Link) => link.url === value).length > 0) {
-				isDuplicate = true;
-				return;
-			}
+		if (links.filter((link: Link) => link.url === value).length > 0) {
+			isDuplicate = true;
+			return;
+		}
 
-			isDuplicate = false;
-			url = value;
-		}, 350);
+		isDuplicate = false;
+		url = value;
 	};
 
 	onDestroy(unsubscribe)
@@ -81,7 +76,7 @@
 		</div>
 	</form>
 
-	<div class="flex flex-column flex-wrap gap-5">
+	<div class="flex flex-column justify-center md:justify-start flex-wrap gap-5">
 		{#key links}
 			{#each links as link}
 			<LinkComponent item={link} />
