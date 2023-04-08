@@ -1,0 +1,40 @@
+version: '3'
+
+services:
+  db:
+    image: postgres
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: passwd
+      POSTGRES_DB: url_shortener
+
+  backend:
+    image: ghcr.io/pscldev/url-shortener-backend:latest
+    environment:
+      NODE_ENV: prod
+      PORT: 3010
+      DATABASE_URL: postgresql://admin:passwd@db:5432/url_shortener?schema=public
+      GITHUB_CLIENT_ID: 0
+      GITHUB_CLIENT_SECRET: 0
+      GITHUB_CALLBACK_URL: http://domain.tld/callback
+      JWT_SECRET: 0
+      JWT_EXPIRES_IN: 48
+      FRONTEND_URL: http://domain.tld
+      ADMIN_ID: 0
+      PRINT_CONFIGURATION: true
+    ports:
+      - 3010:3010
+    depends_on:
+      - db
+    restart: on-failure
+  
+  frontend:
+    image: ghcr.io/pscldev/url-shortener-frontend:latest
+    environment:
+      NODE_ENV: prod
+      VITE_PUBLIC_API_BASE_PATH: http://domain.tld/v1
+    ports:
+      - 3000:3000
+    depends_on:
+      - backend
+
