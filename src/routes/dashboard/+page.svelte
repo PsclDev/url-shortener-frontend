@@ -10,7 +10,7 @@
 	let apiUrl: string;
 	onMount(async () => {
 		apiUrl = `${variables.apiBasePath}`;
-		const res = await fetch(apiUrl, {credentials: 'include'});
+		const res = await fetch(`${apiUrl}/links`, {credentials: 'include'});
 		const links = await res.json();
 		appStore.set(links);
 	});
@@ -21,7 +21,7 @@
 	let url = '';
 	let isDuplicate = false;
 	let onSubmit = async () => {
-		const res = await fetch(apiUrl, {
+		const res = await fetch(`${apiUrl}/link`, {
 			method: 'POST',
 			credentials: 'include',
 			headers: {

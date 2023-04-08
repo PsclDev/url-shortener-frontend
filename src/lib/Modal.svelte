@@ -18,7 +18,7 @@
 
 	async function onSubmit() {
 		const { url, slug } = item;
-		await fetch(`${apiUrl}/${item.id}`, {
+		await fetch(`${apiUrl}/link/${item.id}`, {
 			method: 'PATCH',
 			credentials: 'include',
 			headers: {
@@ -32,7 +32,7 @@
 	}
 
 	async function trash() {
-		await fetch(`${apiUrl}/${item.id}`, {
+		await fetch(`${apiUrl}/link/${item.id}`, {
 			method: 'DELETE',
 			credentials: 'include'
 		});
