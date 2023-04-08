@@ -1,6 +1,5 @@
 <script>
 	import { variables } from '$lib/variables';
-
 	export const loginUrl = variables.apiBasePath + '/auth/github';
 </script>
 

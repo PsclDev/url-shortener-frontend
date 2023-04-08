@@ -32,7 +32,7 @@ services:
     image: ghcr.io/pscldev/url-shortener-frontend:latest
     environment:
       NODE_ENV: prod
-      VITE_PUBLIC_API_BASE_PATH: http://domain.tld/v1
+      PUBLIC_API_BASE_PATH: http://domain.tld/v1
     ports:
       - 3000:3000
     depends_on:
