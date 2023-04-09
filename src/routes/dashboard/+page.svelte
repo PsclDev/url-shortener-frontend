@@ -30,6 +30,8 @@
 			body: JSON.stringify({ url })
 		});
 		const link = await res.json();
+
+		url = '';
 		appStore.update(l => l = [link, ...links]);
 	};
 
@@ -50,7 +52,7 @@
     <title>Shortener - Dashboard</title> 
 </svelte:head>
 
-<div class="min-h-screen pt-10 mb-5 place-items-center">
+<div class="min-h-screen pt-10 place-items-center">
 	<form on:submit|preventDefault={onSubmit} class="mb-10">
 		<div class="relative">
 			<div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-white">
@@ -76,7 +78,7 @@
 		</div>
 	</form>
 
-	<div class="flex flex-column justify-center md:justify-start flex-wrap gap-5">
+	<div class="flex flex-column justify-center lg:justify-start flex-wrap gap-5">
 		{#key links}
 			{#each links as link}
 			<LinkComponent item={link} />

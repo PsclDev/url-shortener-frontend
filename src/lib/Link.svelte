@@ -5,6 +5,7 @@
 	import Tooltip from 'sv-tooltip';
 	import { copy } from 'svelte-copy';
 	import ModalComponent from '$lib/Modal.svelte';
+	import { variables } from './variables';
 
 	export let item: Link;
 	export let isEditing = false;
@@ -18,6 +19,9 @@
 	}
 
 	function getShortlink() {
+		if(variables.redirectBasePath) {
+			return `${variables.redirectBasePath}/${getHandle()}`;
+		}
 		return `${window.location.origin}/${getHandle()}`;
 	}
 </script>
